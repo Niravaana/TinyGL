@@ -140,10 +140,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Context.cpp" />
-    <ClCompile Include="core.cpp" />
+    <ClCompile Include="Core.cpp" />
     <ClCompile Include="dllmain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Common.h" />
     <ClInclude Include="Context.h" />
     <ClInclude Include="gl.h" />
   </ItemGroup>

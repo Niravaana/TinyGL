@@ -1,4 +1,5 @@
 #include <Windows.h>
+#include <gl/GL.h>
 
 BOOL APIENTRY DllMain( HMODULE hModule,
                        DWORD  ul_reason_for_call,

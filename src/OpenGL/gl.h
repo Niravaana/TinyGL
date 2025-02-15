@@ -1163,6 +1163,7 @@ WINGDIAPI void APIENTRY glFinish (void);
 WINGDIAPI void APIENTRY glFlush (void);
 WINGDIAPI GLenum APIENTRY glGetError (void);
 WINGDIAPI void APIENTRY glVertex2f (GLfloat x, GLfloat y);
+WINGDIAPI void APIENTRY glViewport (GLint x, GLint y, GLsizei width, GLsizei height);
 
 #endif /* WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) */
 #pragma endregion
