@@ -20,3 +20,10 @@ struct float2
 	float m_x;
 	float m_y;
 };
+
+struct Triangle
+{
+	float2 m_v0;
+	float2 m_v1;
+	float2 m_v2;
+};

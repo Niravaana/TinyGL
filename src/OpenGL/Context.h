@@ -43,5 +43,7 @@ public:
 	GLenum m_glError;
 	GLuint m_nPrims;
 	std::vector<float2> m_vtxBuffer;
+	std::vector<float2> m_idxBuffer;
 	std::vector<float3> m_colorBuffer;
+	std::vector<Triangle> m_triangles;
 };
