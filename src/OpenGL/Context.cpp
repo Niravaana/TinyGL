@@ -1,4 +1,8 @@
 #include "Context.h"
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stbi_image_write.h"
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 #include <cassert>
 
 inline float edgeFunction(const float2 &a, const float2 &b, const float2 &c) {
@@ -8,7 +12,7 @@ inline float edgeFunction(const float2 &a, const float2 &b, const float2 &c) {
 
 Context::Context()
 {
-	m_hdc = wglGetCurrentDC();
+	//m_hdc = GetDC();
 	m_topology = GL_TRIANGLES;
 	m_viewport.m_x = m_viewport.m_y = m_viewport.m_width = m_viewport.m_height = 0;
 	m_glError = GL_NO_ERROR;
@@ -24,6 +28,7 @@ void Context::Rasterize()
 {
 	assert(m_nPrims != 0);
 	assert(m_viewport.m_width != 0 && m_viewport.m_height != 0);
+	std::vector<uint8_t> pixels( m_viewport.m_width * m_viewport.m_height * 4 );
 
 	for (size_t primId = 0; primId < m_nPrims; primId++)
 	{
@@ -38,7 +43,7 @@ void Context::Rasterize()
 				float w1 = edgeFunction(m_triangles[primId].m_v2, m_triangles[primId].m_v0, sample);
 				float w2 = edgeFunction(m_triangles[primId].m_v0, m_triangles[primId].m_v1, sample);
 
-				if (w0 >= 0 && &w1 >= 0 && w2 >= 0)
+				if (w0 >= 0 && w1 >= 0 && w2 >= 0)
 				{
 					w0 /= area;
 					w1 /= area;
@@ -48,9 +53,17 @@ void Context::Rasterize()
 					float g = w0 * m_colorBuffer[primId * 3 + 1].m_x + w1 * m_colorBuffer[primId * 3 + 1].m_y + w2 * m_colorBuffer[primId * 3 + 1].m_z;
 					float b = w0 * m_colorBuffer[primId * 3 + 2].m_x + w1 * m_colorBuffer[primId * 3 + 2].m_y + w2 * m_colorBuffer[primId * 3 + 2].m_z;
 
-					SetPixel(m_hdc, i, j, RGB(r * 255, g * 255, b * 255));
+					int pixId = j + i * m_viewport.m_width;
+					pixels[pixId * 4 + 0] = static_cast<uint8_t>(r * 255);
+					pixels[pixId * 4 + 1] = static_cast<uint8_t>(g * 255);
+					pixels[pixId * 4 + 2] = static_cast<uint8_t>(b * 255);
+					pixels[pixId * 4 + 3] = 255;
+
+					
 				}
 			}
 		}
 	}
+
+	stbi_write_png( "output.png", m_viewport.m_width, m_viewport.m_height, 4, pixels.data(), m_viewport.m_width * 4);
 }

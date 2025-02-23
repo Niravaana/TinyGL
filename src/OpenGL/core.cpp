@@ -41,11 +41,12 @@ void glEnd(void)
 
 void glFinish(void)
 {
+	Context::GetContext().Rasterize();
 }
 
 void glFlush(void)
 {
-
+	Context::GetContext().Rasterize();
 }
 
 GLenum glGetError(void)

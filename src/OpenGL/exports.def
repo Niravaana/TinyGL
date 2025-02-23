@@ -1,0 +1,11 @@
+LIBRARY
+EXPORTS 
+	glBegin=glBegin
+	glClear=glClear
+	glColor3f=glColor3f
+	glEnd=glEnd
+	glFinish=glFinish
+	glFlush=glFlush
+	glGetError=glGetError
+	glVertex2f=glVertex2f 
+	glViewport=glViewport 

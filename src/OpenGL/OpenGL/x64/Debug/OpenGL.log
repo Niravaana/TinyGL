@@ -1,17 +1,8 @@
 ﻿  Context.cpp
+D:\PersonalDevelopment\TinyGL\src\OpenGL\Context.cpp(56,16): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   Core.cpp
-D:\PersonalDevelopment\TinyGL\src\OpenGL\Core.cpp(7,6): warning C4273: 'glBegin': inconsistent dll linkage
-D:\PersonalDevelopment\TinyGL\src\OpenGL\Core.cpp(12,6): warning C4273: 'glClear': inconsistent dll linkage
-D:\PersonalDevelopment\TinyGL\src\OpenGL\Core.cpp(17,6): warning C4273: 'glColor3f': inconsistent dll linkage
-D:\PersonalDevelopment\TinyGL\src\OpenGL\Core.cpp(22,6): warning C4273: 'glEnd': inconsistent dll linkage
-D:\PersonalDevelopment\TinyGL\src\OpenGL\Core.cpp(27,77): warning C4267: '=': conversion from 'size_t' to 'GLuint', possible loss of data
-D:\PersonalDevelopment\TinyGL\src\OpenGL\Core.cpp(31,6): warning C4273: 'glFinish': inconsistent dll linkage
-D:\PersonalDevelopment\TinyGL\src\OpenGL\Core.cpp(35,6): warning C4273: 'glFlush': inconsistent dll linkage
-D:\PersonalDevelopment\TinyGL\src\OpenGL\Core.cpp(40,8): warning C4273: 'glGetError': inconsistent dll linkage
-D:\PersonalDevelopment\TinyGL\src\OpenGL\Core.cpp(45,6): warning C4273: 'glVertex2f': inconsistent dll linkage
-D:\PersonalDevelopment\TinyGL\src\OpenGL\Core.cpp(50,6): warning C4273: 'glViewport': inconsistent dll linkage
+D:\PersonalDevelopment\TinyGL\src\OpenGL\Core.cpp(29,78): warning C4267: '=': conversion from 'size_t' to 'GLuint', possible loss of data
   dllmain.cpp
   Generating Code...
      Creating library D:\PersonalDevelopment\TinyGL\src\OpenGL\x64\Debug\OpenGL.lib and object D:\PersonalDevelopment\TinyGL\src\OpenGL\x64\Debug\OpenGL.exp
-Context.obj : error LNK2019: unresolved external symbol __imp_wglGetCurrentDC referenced in function "public: __cdecl Context::Context(void)" (??0Context@@QEAA@XZ)
-D:\PersonalDevelopment\TinyGL\src\OpenGL\x64\Debug\OpenGL.dll : fatal error LNK1120: 1 unresolved externals
+  OpenGL.vcxproj -> D:\PersonalDevelopment\TinyGL\src\OpenGL\x64\Debug\OpenGL.dll
