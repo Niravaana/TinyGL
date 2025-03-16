@@ -6,3 +6,8 @@ This also gives us a chance to see the evolution of APIs and how it is tightly c
 
 # Platforms 
 As the purpose of this project is learning/sharing learning I will be just doing it on windows platform. Though it should be portable to other platforms with some efforts.
+
+# Output 
+Implemented simple triangle rendering.
+
+![output](https://github.com/user-attachments/assets/c8c6da88-753a-4848-970a-5f6692401f04)
