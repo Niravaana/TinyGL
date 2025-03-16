@@ -3,6 +3,7 @@
 /*
 	No error checking is done for any function yet.
 */
+using namespace TinyGl;
 
 void glBegin(GLenum mode)
 {
@@ -29,11 +30,11 @@ void glEnd(void)
 			Context::GetContext().m_nPrims = Context::GetContext().m_vtxBuffer.size() / 3;
 			for (size_t i = 0; i < Context::GetContext().m_nPrims; i++)
 			{
-				Triangle t;
+				Triangle<Vector2> t;
 				t.m_v0 = Context::GetContext().m_vtxBuffer[i + 0];
 				t.m_v1 = Context::GetContext().m_vtxBuffer[i + 1];
 				t.m_v2 = Context::GetContext().m_vtxBuffer[i + 2];
-				Context::GetContext().m_triangles.push_back(t);
+				Context::GetContext().m_triangles2D.push_back(t);
 			}
 		}
 	}
