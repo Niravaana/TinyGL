@@ -6,7 +6,7 @@
 
 namespace TinyGl
 {
-	
+	constexpr float Pi = 3.14159265358979323846f;
 	using RealType = float; //can be switched to double just changing this
 	using u32 = unsigned int;
 	using u64 = unsigned long long;
@@ -41,6 +41,14 @@ namespace TinyGl
 			return (&x)[index];
 		}
 
+		TGL_INLINE Vector<T,2>& operator=(const Vector<T, 2>& b)
+		{
+			x = b.x;
+			y = b.y;
+
+			return *this;
+		}
+
 		bool HasNaNs() const { return isNaN(x) || isNaN(y); }
 	};
 
@@ -53,6 +61,15 @@ namespace TinyGl
 		{
 			TGL_ASSERT(index >= 0 && index < 3);
 			return (&x)[index];
+		}
+
+		TGL_INLINE Vector<T,3>& operator=(const Vector<T, 3>& b)
+		{
+			x = b.x;
+			y = b.y;
+			z = b.z;
+
+			return *this;
 		}
 
 		bool HasNaNs() const { return isNaN(x) || isNaN(y) || isNaN(z); }
@@ -69,6 +86,14 @@ namespace TinyGl
 			return (&x)[index];
 		}
 
+		TGL_INLINE Vector<T,4>& operator=(const Vector<T, 4>& b)
+		{
+			x = b.x;
+			y = b.y;
+			z = b.z;
+			w = b.w;
+			return *this;
+		}
 		bool HasNaNs() const { return isNaN(x) || isNaN(y) || isNaN(z) || isNaN(z); }
 	};
 
@@ -89,6 +114,46 @@ namespace TinyGl
 
 		if constexpr (N >= 3) res.z = a.z * b.z;
 		if constexpr (N == 4) res.w = a.w * b.w;
+
+		TGL_ASSERT(!res.HasNaNs());
+		return res;
+	}
+
+	template<typename T, u32 N>
+	TGL_INLINE constexpr Vector<T, N> operator/(const Vector<T, N>& a, const Vector<T, N>& b)
+	{
+		static_assert(N >= 2 && N <= 4);
+		Vector<T, N> res;
+		TGL_ASSERT(b.x != 0 && b.y != 0);
+		res.x = a.x / b.x;
+		res.y = a.y / b.y;
+
+		if constexpr (N >= 3) {
+			TGL_ASSERT(b.z != 0); res.z = a.z / b.z;
+		}
+		if constexpr (N == 4) {
+			TGL_ASSERT(b.w != 0); res.w = a.w / b.w;
+		}
+
+		TGL_ASSERT(!res.HasNaNs());
+		return res;
+	}
+
+	template<typename T, u32 N>
+	TGL_INLINE constexpr Vector<T, N> operator/(const Vector<T, N>& a, float v)
+	{
+		static_assert(N >= 2 && N <= 4);
+		Vector<T, N> res;
+		TGL_ASSERT(v != 0);
+		res.x = a.x / v;
+		res.y = a.y / v;
+
+		if constexpr (N >= 3) {
+			res.z = a.z / v;
+		}
+		if constexpr (N == 4) {
+			res.w = a.w / v;
+		}
 
 		TGL_ASSERT(!res.HasNaNs());
 		return res;
@@ -119,6 +184,24 @@ namespace TinyGl
 	TGL_INLINE constexpr T dot(const Vector<T, N>& a, const Vector<T, N>& b)
 	{
 		return sum(a * b);
+	}
+
+	template<typename T, u32 N>
+	TGL_INLINE constexpr T sqLength(const Vector<T, N>& a)
+	{
+		return dot(a , a);
+	}
+
+	template<typename T, u32 N>
+	TGL_INLINE constexpr T length(const Vector<T, N>& a)
+	{
+		return std::sqrtf(sqLength(a));
+	}
+
+	template<typename T, u32 N>
+	TGL_INLINE Vector<T, N> normalize(const Vector<T, N>& a)
+	{
+		return a / length(a);
 	}
 
 	struct Matrix4x4
@@ -198,4 +281,13 @@ namespace TinyGl
 		return m;
 	}
 
+	TGL_INLINE Matrix4x4 mt4x4Rotation(Vector4 r)
+	{
+		float angle = r.x;
+		Vector3 axis = { r.y, r.z, r.w };
+		float angleRad = angle * (Pi / 180.0f);
+		axis = normalize(axis);
+
+		//add rotation matrix 
+	}
 }
