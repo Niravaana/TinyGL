@@ -34,16 +34,16 @@ void Context::Rasterize()
 
 	for (size_t primId = 0; primId < m_nPrims; primId++)
 	{
-		float area = edgeFunction(m_triangles2D[primId].m_v0, m_triangles2D[primId].m_v1, m_triangles2D[primId].m_v2);
+		float area = edgeFunction(m_triangles2D[primId].v0, m_triangles2D[primId].v1, m_triangles2D[primId].v2);
 		for (size_t i = 0; i < m_viewport.m_height; i++)
 		{
 			for (size_t j = 0; j < m_viewport.m_width; j++)
 			{
 				Vector2 sample = { i * 0.5f, j * 0.5f };
 				
-				float w0 = edgeFunction(m_triangles2D[primId].m_v1, m_triangles2D[primId].m_v2, sample);
-				float w1 = edgeFunction(m_triangles2D[primId].m_v2, m_triangles2D[primId].m_v0, sample);
-				float w2 = edgeFunction(m_triangles2D[primId].m_v0, m_triangles2D[primId].m_v1, sample);
+				float w0 = edgeFunction(m_triangles2D[primId].v1, m_triangles2D[primId].v2, sample);
+				float w1 = edgeFunction(m_triangles2D[primId].v2, m_triangles2D[primId].v0, sample);
+				float w2 = edgeFunction(m_triangles2D[primId].v0, m_triangles2D[primId].v1, sample);
 
 				if (w0 >= 0 && w1 >= 0 && w2 >= 0)
 				{

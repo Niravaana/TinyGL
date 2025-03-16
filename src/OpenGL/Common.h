@@ -90,7 +90,7 @@ namespace TinyGl
 		if constexpr (N >= 3) res.z = a.z * b.z;
 		if constexpr (N == 4) res.w = a.w * b.w;
 
-		DCHECK(!res.HasNaNs());
+		TGL_ASSERT(!res.HasNaNs());
 		return res;
 	}
 
@@ -121,12 +121,81 @@ namespace TinyGl
 		return sum(a * b);
 	}
 
+	struct Matrix4x4
+	{
+		Vector4 row[4];
+	};
+
 	template<typename T>
 	struct Triangle
 	{
-		T m_v0;
-		T m_v1;
-		T m_v2;
+		T v0;
+		T v1;
+		T v2;
 	};
+
+	TGL_INLINE Matrix4x4 transpose(const Matrix4x4& m)
+	{
+		return {
+			Vector4{ m.row[0].x, m.row[1].x, m.row[2].x, m.row[3].x },
+			Vector4{ m.row[0].y, m.row[1].y, m.row[2].y, m.row[3].y },
+			Vector4{ m.row[0].z, m.row[1].z, m.row[2].z, m.row[3].z },
+			Vector4{ m.row[0].w, m.row[1].w, m.row[2].w, m.row[3].w },
+		};
+	}
+
+	TGL_INLINE Matrix4x4 matMultiply(const Matrix4x4& a, const Matrix4x4& b)
+	{
+		const Matrix4x4 bTranspose = transpose(b);
+
+		return { Vector4{ dot(a.row[0], bTranspose.row[0]), dot(a.row[0], bTranspose.row[1]), dot(a.row[0], bTranspose.row[2]), dot(a.row[0], bTranspose.row[3]) },
+				 Vector4{ dot(a.row[1], bTranspose.row[0]), dot(a.row[1], bTranspose.row[1]), dot(a.row[1], bTranspose.row[2]), dot(a.row[1], bTranspose.row[3]) },
+				 Vector4{ dot(a.row[2], bTranspose.row[0]), dot(a.row[2], bTranspose.row[1]), dot(a.row[2], bTranspose.row[2]), dot(a.row[2], bTranspose.row[3]) },
+				 Vector4{ dot(a.row[3], bTranspose.row[0]), dot(a.row[3], bTranspose.row[1]), dot(a.row[3], bTranspose.row[2]), dot(a.row[3], bTranspose.row[3]) } };
+	}
+
+	TGL_INLINE Vector4 mulMatVec(const Matrix4x4& a, const Vector4& b)
+	{
+		return { dot(a.row[0], b), dot(a.row[1], b), dot(a.row[2], b), dot(a.row[3], b) };
+	}
+
+	TGL_INLINE Vector4 mulVecMat(const Vector4& a, const Matrix4x4& b)
+	{
+		const Matrix4x4 bTranspose = transpose(b);
+		return { dot(a, bTranspose.row[0]), dot(a, bTranspose.row[1]), dot(a, bTranspose.row[2]), dot(a, bTranspose.row[3]) };
+	}
+
+	TGL_INLINE Matrix4x4 mt4x4Identity()
+	{
+		Matrix4x4 m;
+		m.row[0] = { 1.f, 0.f, 0.f, 0.f };
+		m.row[1] = { 0.f, 1.f, 0.f, 0.f };
+		m.row[2] = { 0.f, 0.f, 1.f, 0.f };
+		m.row[3] = { 0.f, 0.f, 0.f, 1.f };
+
+		return m;
+	}
+
+	TGL_INLINE Matrix4x4 mt4x4Scale(const Vector3& s)
+	{
+		Matrix4x4 m;
+		m.row[0] = { s.x, 0.f, 0.f, 0.f };
+		m.row[1] = { 0.f, s.y, 0.f, 0.f };
+		m.row[2] = { 0.f, 0.f, s.z, 0.f };
+		m.row[3] = { 0.f, 0.f, 0.f, 1.f };
+
+		return m;
+	}
+
+	TGL_INLINE Matrix4x4 mt4x4Translate(const Vector3& t)
+	{
+		Matrix4x4 m;
+		m.row[0] = { 1.f, 0.f, 0.f, t.x };
+		m.row[1] = { 0.f, 1.f, 0.f, t.y };
+		m.row[2] = { 0.f, 0.f, 1.f, t.z };
+		m.row[3] = { 0.f, 0.f, 0.f, 1.f };
+
+		return m;
+	}
 
 }

@@ -1,7 +1,11 @@
 #include <Windows.h>
 #include "Context.h"
 /*
-	No error checking is done for any function yet.
+	1. No error checking is done for any function yet.
+	2. Currently handling 2D vertices only , needs 3D extension.
+	3. Add matrix type.
+	4. For each matrix mode add a stack with each stack having some depth.(push matric/pop matric functions)
+	5. Add glFrustrum , glRotate and all those matric related functions.
 */
 using namespace TinyGl;
 
@@ -31,9 +35,9 @@ void glEnd(void)
 			for (size_t i = 0; i < Context::GetContext().m_nPrims; i++)
 			{
 				Triangle<Vector2> t;
-				t.m_v0 = Context::GetContext().m_vtxBuffer[i + 0];
-				t.m_v1 = Context::GetContext().m_vtxBuffer[i + 1];
-				t.m_v2 = Context::GetContext().m_vtxBuffer[i + 2];
+				t.v0 = Context::GetContext().m_vtxBuffer[i + 0];
+				t.v1 = Context::GetContext().m_vtxBuffer[i + 1];
+				t.v2 = Context::GetContext().m_vtxBuffer[i + 2];
 				Context::GetContext().m_triangles2D.push_back(t);
 			}
 		}
