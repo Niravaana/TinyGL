@@ -19,6 +19,9 @@ Context::Context()
 	m_viewport.m_x = m_viewport.m_y = m_viewport.m_width = m_viewport.m_height = 0;
 	m_glError = GL_NO_ERROR;
 	m_nPrims = 0;
+	m_mvMatrixStack.push(mt4x4Identity());
+	m_projMatStack.push(mt4x4Identity());
+	m_textureMatStack.push(mt4x4Identity());
 }
 
 Context::~Context()

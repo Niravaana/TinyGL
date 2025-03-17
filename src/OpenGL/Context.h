@@ -18,6 +18,14 @@ namespace TinyGl
 	class Context
 	{
 	public:
+		enum class MatrixStackType
+		{
+			MatrixStackTypeModelView,
+			MatrixStackTypeProjection,
+			MatrixStackTypeTexture,
+			MatrixStackTypeError
+		};
+
 		struct Viewport
 		{
 			GLint m_x;
@@ -55,11 +63,13 @@ namespace TinyGl
 		std::vector<Triangle<Vector2>> m_triangles2D;
 		std::vector<Triangle<Vector3>> m_triangles3D;
 
-		Matrix4x4 m_currentModelViewMatrix; // point to top of the stack matrix( we might not need this copy ??)
-		Matrix4x4 m_currentProjStack;
-		Matrix4x4 m_currentTextureStack;
+		MatrixStackType m_currentMatStackType = MatrixStackType::MatrixStackTypeError;
+		Matrix4x4 m_currentMatrix;
 		std::stack<Matrix4x4> m_mvMatrixStack;
 		std::stack<Matrix4x4> m_projMatStack;
 		std::stack<Matrix4x4> m_textureMatStack;
+
+		GLenum m_error;
+		bool m_isWithinBeginEnd = false;
 	};
 }
