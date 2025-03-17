@@ -3,9 +3,16 @@
 /*
 	1. No error checking is done for any function yet.
 	2. Currently handling 2D vertices only , needs 3D extension.
-	3. Add matrix type.
-	4. For each matrix mode add a stack with each stack having some depth.(push matric/pop matric functions)
-	5. Add glFrustrum , glRotate and all those matric related functions.
+	3. Add glOrtho function.
+	4. Add glPopMatrix function 
+	5. Add LoadMatrix 
+	6. Add glTranslate, glScale, glRotate functions.
+	7. Add glMultMatrix 
+	8. glGet function to query current values 
+	9. Add depth related functions. (glEnable, glDepthFunc, glDepthMask, glDepthRange)
+	10. Seperate Vertex processing and Fragment Processing in two differnt function calls.
+	11. Add support for 3D vert, Add depth handling in rasterization and Render cube.(This will utilize all matrix functions) 
+
 */
 using namespace TinyGl;
 
