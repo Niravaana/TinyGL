@@ -120,6 +120,21 @@ namespace TinyGl
 	}
 
 	template<typename T, u32 N>
+	TGL_INLINE constexpr Vector<T, N> operator*(float f, const Vector<T, N>& a)
+	{
+		static_assert(N >= 2 && N <= 4);
+		Vector<T, N> res;
+		res.x = a.x * f;
+		res.y = a.y * f;
+
+		if constexpr (N >= 3) res.z = a.z * f;
+		if constexpr (N == 4) res.w = a.w * f;
+
+		TGL_ASSERT(!res.HasNaNs());
+		return res;
+	}
+
+	template<typename T, u32 N>
 	TGL_INLINE constexpr Vector<T, N> operator/(const Vector<T, N>& a, const Vector<T, N>& b)
 	{
 		static_assert(N >= 2 && N <= 4);
@@ -286,8 +301,17 @@ namespace TinyGl
 		float angle = r.x;
 		Vector3 axis = { r.y, r.z, r.w };
 		float angleRad = angle * (Pi / 180.0f);
+		float cos = std::cosf(angleRad);
+		float sin = std::sinf(angleRad);
 		axis = normalize(axis);
+		float factor = 1.0f - cos;
+		Vector3 axisT = factor * axis;
 
-		//add rotation matrix 
+		Matrix4x4 rotation;
+		rotation.row[0] = { cos + axisT[0] * axis[0], axisT[0] * axis[2] - sin * axis[1], axisT[0] * axis[2] - sin * axis[1], 0.0f };
+		rotation.row[1] = { axisT[1] * axis[0] - sin * axis[2], cos + axisT[1] * axis[1], axisT[1] * axis[2] + sin * axis[0], 0.0f };
+		rotation.row[2] = { axisT[2] * axis[0] + sin * axis[1], axisT[2] * axis[1] - sin * axis[0], cos + axisT[2] * axis[2], 0.0f };
+
+		return rotation;
 	}
 }
