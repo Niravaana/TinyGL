@@ -68,8 +68,6 @@ namespace TinyGl
 		std::stack<Matrix4x4> m_mvMatrixStack;
 		std::stack<Matrix4x4> m_projMatStack;
 		std::stack<Matrix4x4> m_textureMatStack;
-
-		GLenum m_error;
 		bool m_isWithinBeginEnd = false;
 	};
 }

@@ -58,6 +58,10 @@ void glFlush(void)
 
 GLenum glGetError(void)
 {
+	if (Context::GetContext().m_isWithinBeginEnd)
+	{
+		return GL_INVALID_OPERATION;
+	}
 	return Context::GetContext().m_glError;
 }
 
@@ -110,12 +114,12 @@ void glFrustum(GLdouble left, GLdouble right, GLdouble bottom, GLdouble top, GLd
 {
 	if (zFar < 0.0f || zNear < 0.0f)
 	{
-		Context::GetContext().m_error = GL_INVALID_ENUM;
+		Context::GetContext().m_glError = GL_INVALID_ENUM;
 		return;
 	}
 	if (Context::GetContext().m_isWithinBeginEnd)
 	{
-		Context::GetContext().m_error = GL_INVALID_OPERATION;
+		Context::GetContext().m_glError = GL_INVALID_OPERATION;
 		return;
 	}
 	float A = static_cast<float>((right + left) / (right - left));
@@ -139,7 +143,7 @@ void glPushMatrix(void)
 {
 	if (Context::GetContext().m_isWithinBeginEnd)
 	{
-		Context::GetContext().m_error = GL_INVALID_OPERATION;
+		Context::GetContext().m_glError = GL_INVALID_OPERATION;
 		return;
 	}
 
@@ -147,7 +151,7 @@ void glPushMatrix(void)
 	{
 		if (Context::GetContext().m_mvMatrixStack.size() > MaxModelViewMatStackDepth)
 		{
-			Context::GetContext().m_error = GL_STACK_OVERFLOW;
+			Context::GetContext().m_glError = GL_STACK_OVERFLOW;
 			return;
 		}
 		Context::GetContext().m_mvMatrixStack.push(Context::GetContext().m_currentMatrix);
@@ -156,7 +160,7 @@ void glPushMatrix(void)
 	{
 		if (Context::GetContext().m_projMatStack.size() > MaxProjMatStackDepth)
 		{
-			Context::GetContext().m_error = GL_STACK_OVERFLOW;
+			Context::GetContext().m_glError = GL_STACK_OVERFLOW;
 			return;
 		}
 		Context::GetContext().m_projMatStack.push(Context::GetContext().m_currentMatrix);
@@ -165,7 +169,7 @@ void glPushMatrix(void)
 	{
 		if (Context::GetContext().m_textureMatStack.size() > MaxTextureMatStackDepth)
 		{
-			Context::GetContext().m_error = GL_STACK_OVERFLOW;
+			Context::GetContext().m_glError = GL_STACK_OVERFLOW;
 			return;
 		}
 		Context::GetContext().m_textureMatStack.push(Context::GetContext().m_currentMatrix);
