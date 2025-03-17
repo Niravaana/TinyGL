@@ -1,7 +1,3 @@
-﻿  Context.cpp
-D:\PersonalDevelopment\TinyGL\src\OpenGL\Context.cpp(58,16): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  Core.cpp
-D:\PersonalDevelopment\TinyGL\src\OpenGL\Core.cpp(34,78): warning C4267: '=': conversion from 'size_t' to 'GLuint', possible loss of data
-  Generating Code...
-     Creating library D:\PersonalDevelopment\TinyGL\src\OpenGL\x64\Debug\OpenGL.lib and object D:\PersonalDevelopment\TinyGL\src\OpenGL\x64\Debug\OpenGL.exp
+﻿  Core.cpp
+D:\PersonalDevelopment\TinyGL\src\OpenGL\Core.cpp(35,78): warning C4267: '=': conversion from 'size_t' to 'GLuint', possible loss of data
   OpenGL.vcxproj -> D:\PersonalDevelopment\TinyGL\src\OpenGL\x64\Debug\OpenGL.dll

@@ -1155,15 +1155,19 @@ typedef void GLvoid;
 
 /*************************************************************/
 
-extern "C" void APIENTRY glBegin (GLenum mode);
-extern "C" void APIENTRY glClear (GLbitfield mask);
-extern "C" void APIENTRY glColor3f (GLfloat red, GLfloat green, GLfloat blue);
-extern "C" void APIENTRY glEnd (void);
-extern "C" void APIENTRY glFinish (void);
-extern "C" void APIENTRY glFlush (void);
+extern "C" void   APIENTRY glBegin (GLenum mode);
+extern "C" void   APIENTRY glClear (GLbitfield mask);
+extern "C" void   APIENTRY glColor3f (GLfloat red, GLfloat green, GLfloat blue);
+extern "C" void   APIENTRY glEnd (void);
+extern "C" void   APIENTRY glFinish (void);
+extern "C" void   APIENTRY glFlush (void);
 extern "C" GLenum APIENTRY glGetError (void);
-extern "C" void APIENTRY glVertex2f (GLfloat x, GLfloat y);
-extern "C" void APIENTRY glViewport (GLint x, GLint y, GLsizei width, GLsizei height);
+extern "C" void   APIENTRY glVertex2f (GLfloat x, GLfloat y);
+extern "C" void   APIENTRY glViewport (GLint x, GLint y, GLsizei width, GLsizei height);
+extern "C" void   APIENTRY glMatrixMode(GLenum mode);
+extern "C" void   APIENTRY glLoadIdentity(void);
+extern "C" void   APIENTRY glFrustum(GLdouble left, GLdouble right, GLdouble bottom, GLdouble top, GLdouble zNear, GLdouble zFar);
+extern "C" void   APIENTRY glPushMatrix(void);
 
 #endif /* WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) */
 #pragma endregion

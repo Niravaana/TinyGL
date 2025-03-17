@@ -3,24 +3,24 @@
   "WorkspaceRootPath": "D:\\PersonalDevelopment\\TinyGL\\src\\OpenGL\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{424ED8EB-EAD4-4613-BD1A-04E4D8E05998}|OpenGL.vcxproj|D:\\PersonalDevelopment\\TinyGL\\src\\OpenGL\\Context.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{424ED8EB-EAD4-4613-BD1A-04E4D8E05998}|OpenGL.vcxproj|solutionrelative:Context.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{424ED8EB-EAD4-4613-BD1A-04E4D8E05998}|OpenGL.vcxproj|D:\\PersonalDevelopment\\TinyGL\\src\\OpenGL\\Core.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{424ED8EB-EAD4-4613-BD1A-04E4D8E05998}|OpenGL.vcxproj|solutionrelative:Core.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{424ED8EB-EAD4-4613-BD1A-04E4D8E05998}|OpenGL.vcxproj|D:\\PersonalDevelopment\\TinyGL\\src\\OpenGL\\Common.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{424ED8EB-EAD4-4613-BD1A-04E4D8E05998}|OpenGL.vcxproj|solutionrelative:Common.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{424ED8EB-EAD4-4613-BD1A-04E4D8E05998}|OpenGL.vcxproj|D:\\PersonalDevelopment\\TinyGL\\src\\OpenGL\\Context.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{424ED8EB-EAD4-4613-BD1A-04E4D8E05998}|OpenGL.vcxproj|solutionrelative:Context.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{424ED8EB-EAD4-4613-BD1A-04E4D8E05998}|OpenGL.vcxproj|D:\\PersonalDevelopment\\TinyGL\\src\\OpenGL\\Context.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{424ED8EB-EAD4-4613-BD1A-04E4D8E05998}|OpenGL.vcxproj|solutionrelative:Context.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{424ED8EB-EAD4-4613-BD1A-04E4D8E05998}|OpenGL.vcxproj|D:\\PersonalDevelopment\\TinyGL\\src\\OpenGL\\Core.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{424ED8EB-EAD4-4613-BD1A-04E4D8E05998}|OpenGL.vcxproj|solutionrelative:Core.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{424ED8EB-EAD4-4613-BD1A-04E4D8E05998}|OpenGL.vcxproj|D:\\PersonalDevelopment\\TinyGL\\src\\OpenGL\\gl.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{424ED8EB-EAD4-4613-BD1A-04E4D8E05998}|OpenGL.vcxproj|solutionrelative:gl.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{424ED8EB-EAD4-4613-BD1A-04E4D8E05998}|OpenGL.vcxproj|D:\\PersonalDevelopment\\TinyGL\\src\\OpenGL\\Common.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{424ED8EB-EAD4-4613-BD1A-04E4D8E05998}|OpenGL.vcxproj|solutionrelative:Common.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{424ED8EB-EAD4-4613-BD1A-04E4D8E05998}|OpenGL.vcxproj|D:\\PersonalDevelopment\\TinyGL\\src\\OpenGL\\exports.def||{8B382828-6202-11D1-8870-0000F87579D2}",
@@ -44,7 +44,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
@@ -84,52 +84,52 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "Common.h",
               "DocumentMoniker": "D:\\PersonalDevelopment\\TinyGL\\src\\OpenGL\\Common.h",
               "RelativeDocumentMoniker": "Common.h",
               "ToolTip": "D:\\PersonalDevelopment\\TinyGL\\src\\OpenGL\\Common.h",
               "RelativeToolTip": "Common.h",
-              "ViewState": "AQIAABEBAAAAAAAAAAAwwCIBAAABAAAA",
+              "ViewState": "AQIAAAEBAAAAAAAAAAAAADoBAAARAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2025-02-15T03:00:41.415Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "Core.cpp",
               "DocumentMoniker": "D:\\PersonalDevelopment\\TinyGL\\src\\OpenGL\\Core.cpp",
               "RelativeDocumentMoniker": "Core.cpp",
-              "ToolTip": "D:\\PersonalDevelopment\\TinyGL\\src\\OpenGL\\Core.cpp",
-              "RelativeToolTip": "Core.cpp",
-              "ViewState": "AQIAABgAAAAAAAAAAAAAACcAAAAGAAAA",
+              "ToolTip": "D:\\PersonalDevelopment\\TinyGL\\src\\OpenGL\\Core.cpp*",
+              "RelativeToolTip": "Core.cpp*",
+              "ViewState": "AQIAAGoAAAAAAAAAAAAewHgAAAA+AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-02-15T01:29:18.578Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
               "Title": "gl.h",
               "DocumentMoniker": "D:\\PersonalDevelopment\\TinyGL\\src\\OpenGL\\gl.h",
               "RelativeDocumentMoniker": "gl.h",
               "ToolTip": "D:\\PersonalDevelopment\\TinyGL\\src\\OpenGL\\gl.h",
               "RelativeToolTip": "gl.h",
-              "ViewState": "AQIAAIAEAAAAAAAAAAAAAI4EAAAAAAAA",
+              "ViewState": "AQIAAIAEAAAAAAAAAAAAAJQEAAARAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2025-02-15T01:29:08.634Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Context.h",
               "DocumentMoniker": "D:\\PersonalDevelopment\\TinyGL\\src\\OpenGL\\Context.h",
               "RelativeDocumentMoniker": "Context.h",
               "ToolTip": "D:\\PersonalDevelopment\\TinyGL\\src\\OpenGL\\Context.h",
               "RelativeToolTip": "Context.h",
-              "ViewState": "AQIAACYAAAAAAAAAAAAuwDkAAABqAAAA",
+              "ViewState": "AQIAADQAAAAAAAAAAAAewEEAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2025-02-15T01:22:37.987Z",
               "EditorCaption": ""
@@ -142,7 +142,7 @@
               "RelativeDocumentMoniker": "Context.cpp",
               "ToolTip": "D:\\PersonalDevelopment\\TinyGL\\src\\OpenGL\\Context.cpp",
               "RelativeToolTip": "Context.cpp",
-              "ViewState": "AQIAAAwAAAAAAAAAAAAAAAwAAAAAAAAA",
+              "ViewState": "AQIAAAMAAAAAAAAAAAAAABcAAAATAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-02-15T01:22:21.946Z",
               "EditorCaption": ""
