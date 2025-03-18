@@ -182,3 +182,40 @@ void glPushMatrix(void)
 		Context::GetContext().m_textureMatStack.push(Context::GetContext().m_currentMatrix);
 	}
 }
+
+void glPopMatrix(void)
+{
+	if (Context::GetContext().m_isWithinBeginEnd)
+	{
+		Context::GetContext().m_glError = GL_INVALID_OPERATION;
+		return;
+	}
+
+	if (Context::GetContext().m_currentMatStackType == Context::MatrixStackType::MatrixStackTypeModelView)
+	{
+		if (Context::GetContext().m_mvMatrixStack.size() == 1)
+		{
+			Context::GetContext().m_glError = GL_STACK_UNDERFLOW;
+			return;
+		}
+		Context::GetContext().m_currentMatrix = Context::GetContext().m_mvMatrixStack.top(); Context::GetContext().m_mvMatrixStack.pop();
+	}
+	else if (Context::GetContext().m_currentMatStackType == Context::MatrixStackType::MatrixStackTypeProjection)
+	{
+		if (Context::GetContext().m_projMatStack.size() == 1)
+		{
+			Context::GetContext().m_glError = GL_STACK_UNDERFLOW;
+			return;
+		}
+		Context::GetContext().m_currentMatrix = Context::GetContext().m_projMatStack.top(); Context::GetContext().m_projMatStack.pop();
+	}
+	else if (Context::GetContext().m_currentMatStackType == Context::MatrixStackType::MatrixStackTypeTexture)
+	{
+		if (Context::GetContext().m_textureMatStack.size() == 1)
+		{
+			Context::GetContext().m_glError = GL_STACK_UNDERFLOW;
+			return;
+		}
+		Context::GetContext().m_currentMatrix = Context::GetContext().m_textureMatStack.top(); Context::GetContext().m_textureMatStack.pop();
+	}
+}

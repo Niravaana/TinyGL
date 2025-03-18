@@ -222,6 +222,16 @@ namespace TinyGl
 	struct Matrix4x4
 	{
 		Vector4 row[4];
+		
+		/*TGL_INLINE Matrix4x4& operator=(const Matrix4x4& b)
+		{
+			row[0] = b.row[0];
+			row[1] = b.row[1];
+			row[2] = b.row[2];
+			row[3] = b.row[3];
+
+			return *this;
+		}*/
 	};
 
 	template<typename T>

@@ -1,6 +1,6 @@
 ﻿  Context.cpp
 D:\PersonalDevelopment\TinyGL\src\OpenGL\Context.cpp(61,16): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   Core.cpp
-D:\PersonalDevelopment\TinyGL\src\OpenGL\Core.cpp(35,78): warning C4267: '=': conversion from 'size_t' to 'GLuint', possible loss of data
+D:\PersonalDevelopment\TinyGL\src\OpenGL\Core.cpp(42,78): warning C4267: '=': conversion from 'size_t' to 'GLuint', possible loss of data
+D:\PersonalDevelopment\TinyGL\src\OpenGL\Core.cpp(201,24): error C2679: binary '=': no operator found which takes a right-hand operand of type 'void' (or there is no acceptable conversion)
   Generating Code...
-  OpenGL.vcxproj -> D:\PersonalDevelopment\TinyGL\src\OpenGL\x64\Debug\OpenGL.dll
