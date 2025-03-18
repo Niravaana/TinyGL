@@ -63,7 +63,7 @@ void Context::Rasterize()
 					float g = w0 * m_colorBuffer[primId * 3 + 1].x + w1 * m_colorBuffer[primId * 3 + 1].y + w2 * m_colorBuffer[primId * 3 + 1].z;
 					float b = w0 * m_colorBuffer[primId * 3 + 2].x + w1 * m_colorBuffer[primId * 3 + 2].y + w2 * m_colorBuffer[primId * 3 + 2].z;
 
-					int pixId = j + i * m_viewport.m_width;
+					size_t pixId = j + i * m_viewport.m_width;
 					pixels[pixId * 4 + 0] = static_cast<uint8_t>(r * 255);
 					pixels[pixId * 4 + 1] = static_cast<uint8_t>(g * 255);
 					pixels[pixId * 4 + 2] = static_cast<uint8_t>(b * 255);

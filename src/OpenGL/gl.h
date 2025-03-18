@@ -1171,6 +1171,7 @@ extern "C" void   APIENTRY glLoadIdentity(void);
 extern "C" void   APIENTRY glFrustum(GLdouble left, GLdouble right, GLdouble bottom, GLdouble top, GLdouble zNear, GLdouble zFar);
 extern "C" void   APIENTRY glPushMatrix(void);
 extern "C" void   APIENTRY glPopMatrix(void);
+extern "C" void   APIENTRY glTranslatef(GLfloat x, GLfloat y, GLfloat z);
 
 #endif /* WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) */
 #pragma endregion

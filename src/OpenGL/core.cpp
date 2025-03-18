@@ -52,7 +52,10 @@ void glClear(GLbitfield mask)
 
 void glColor3f(GLfloat red, GLfloat green, GLfloat blue)
 {
-	Context::GetContext().m_colorBuffer.push_back({ red, green, blue });
+	if (Context::GetContext().m_isWithinBeginEnd)
+	{
+		Context::GetContext().m_colorBuffer.push_back({ red, green, blue });
+	}
 }
 
 void glEnd(void)
@@ -110,12 +113,26 @@ GLenum glGetError(void)
 
 void glVertex2f(GLfloat x, GLfloat y)
 {
-	Context::GetContext().m_vtxBuffer2D.push_back({x, y});
+	if (Context::GetContext().m_isWithinBeginEnd)
+	{
+		Context::GetContext().m_vtxBuffer2D.push_back({ x, y });
+	}
 }
 
 void glVertex3f(GLfloat x, GLfloat y, GLfloat z)
 {
-	Context::GetContext().m_vtxBuffer3D.push_back({x, y, z});
+	if (Context::GetContext().m_isWithinBeginEnd)
+	{
+		Context::GetContext().m_vtxBuffer3D.push_back({ x, y, z });
+	}
+}
+
+void glVertex3i(GLint x, GLint y, GLint z)
+{
+	if (Context::GetContext().m_isWithinBeginEnd)
+	{
+		Context::GetContext().m_vtxBuffer3D.push_back({ static_cast<float>(x), static_cast<float>(y), static_cast<float>(z) });
+	}
 }
 
 void glViewport(GLint x, GLint y, GLsizei width, GLsizei height)
@@ -277,5 +294,21 @@ void glPopMatrix(void)
 			return;
 		}
 		Context::GetContext().m_currentMatrix = Context::GetContext().m_textureMatStack.top(); Context::GetContext().m_textureMatStack.pop();
+	}
+}
+
+void glTranslatef(GLfloat x, GLfloat y, GLfloat z)
+{
+	if (Context::GetContext().m_isWithinBeginEnd)
+	{
+		Context::GetContext().m_glError = GL_INVALID_OPERATION;
+		return;
+	}
+	
+	if (Context::GetContext().m_currentMatStackType == Context::MatrixStackType::MatrixStackTypeModelView ||
+		Context::GetContext().m_currentMatStackType == Context::MatrixStackType::MatrixStackTypeProjection)
+	{
+		Matrix4x4 t = mt4x4Translate({ x, y, z });
+		Context::GetContext().m_currentMatrix = matMultiply(Context::GetContext().m_currentMatrix, t);
 	}
 }
