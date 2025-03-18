@@ -4,7 +4,7 @@
 	1. No error checking is done for any function yet.
 	2. Currently handling 2D vertices only , needs 3D extension.
 	3. Add glOrtho function.
-	4. Add glPopMatrix function 
+	4. Add glPopMatrix function - Done 
 	5. Add LoadMatrix 
 	6. Add glTranslate, glScale, glRotate functions.
 	7. Add glMultMatrix 
@@ -24,7 +24,30 @@ void glBegin(GLenum mode)
 
 void glClear(GLbitfield mask)
 {
+	if (Context::GetContext().m_isWithinBeginEnd)
+	{
+		Context::GetContext().m_glError = GL_INVALID_OPERATION;
+		return;
+	}
 
+	switch (mask)
+	{
+	case GL_COLOR_BUFFER_BIT:
+		Context::GetContext().m_colorBuffer.clear(); // ToDo : init with set default values 
+		break;
+	case GL_DEPTH_BUFFER_BIT:
+		Context::GetContext().m_depthBuffer.clear();
+		break;
+	case GL_ACCUM_BUFFER_BIT:
+		Context::GetContext().m_accumBuffer.clear();
+		break;
+	case GL_STENCIL_BUFFER_BIT:
+		Context::GetContext().m_stencilBuffer.clear();
+		break;
+	default:
+		Context::GetContext().m_glError = GL_INVALID_VALUE;
+		break;
+	}
 }
 
 void glColor3f(GLfloat red, GLfloat green, GLfloat blue)
@@ -37,16 +60,29 @@ void glEnd(void)
 	//ToDo : generate a shape and store all prim under it
 	if (Context::GetContext().m_topology == GL_TRIANGLES)
 	{
-		if (Context::GetContext().m_idxBuffer.empty())
+		if (!Context::GetContext().m_vtxBuffer2D.empty())
 		{
-			Context::GetContext().m_nPrims = Context::GetContext().m_vtxBuffer.size() / 3;
+			Context::GetContext().m_nPrims = Context::GetContext().m_vtxBuffer2D.size() / 3;
 			for (size_t i = 0; i < Context::GetContext().m_nPrims; i++)
 			{
 				Triangle<Vector2> t;
-				t.v0 = Context::GetContext().m_vtxBuffer[i + 0];
-				t.v1 = Context::GetContext().m_vtxBuffer[i + 1];
-				t.v2 = Context::GetContext().m_vtxBuffer[i + 2];
+				t.v0 = Context::GetContext().m_vtxBuffer2D[i + 0];
+				t.v1 = Context::GetContext().m_vtxBuffer2D[i + 1];
+				t.v2 = Context::GetContext().m_vtxBuffer2D[i + 2];
 				Context::GetContext().m_triangles2D.push_back(t);
+			}
+		}
+
+		if (!Context::GetContext().m_vtxBuffer3D.empty())
+		{
+			Context::GetContext().m_nPrims = Context::GetContext().m_vtxBuffer3D.size() / 3;
+			for (size_t i = 0; i < Context::GetContext().m_nPrims; i++)
+			{
+				Triangle<Vector3> t;
+				t.v0 = Context::GetContext().m_vtxBuffer3D[i + 0];
+				t.v1 = Context::GetContext().m_vtxBuffer3D[i + 1];
+				t.v2 = Context::GetContext().m_vtxBuffer3D[i + 2];
+				Context::GetContext().m_triangles3D.push_back(t);
 			}
 		}
 	}
@@ -74,11 +110,28 @@ GLenum glGetError(void)
 
 void glVertex2f(GLfloat x, GLfloat y)
 {
-	Context::GetContext().m_vtxBuffer.push_back({x, y});
+	Context::GetContext().m_vtxBuffer2D.push_back({x, y});
+}
+
+void glVertex3f(GLfloat x, GLfloat y, GLfloat z)
+{
+	Context::GetContext().m_vtxBuffer3D.push_back({x, y, z});
 }
 
 void glViewport(GLint x, GLint y, GLsizei width, GLsizei height)
 {
+	if (height < 0)
+	{
+		Context::GetContext().m_glError = GL_INVALID_VALUE;
+		return;
+	}
+
+	if (Context::GetContext().m_isWithinBeginEnd)
+	{
+		Context::GetContext().m_glError = GL_INVALID_OPERATION;
+		return;
+	}
+
 	Context::GetContext().m_viewport.m_x = x;
 	Context::GetContext().m_viewport.m_y = y;
 	Context::GetContext().m_viewport.m_width = width;
@@ -87,6 +140,12 @@ void glViewport(GLint x, GLint y, GLsizei width, GLsizei height)
 
 void glMatrixMode(GLenum mode)
 {
+	if (Context::GetContext().m_isWithinBeginEnd)
+	{
+		Context::GetContext().m_glError = GL_INVALID_OPERATION;
+		return;
+	}
+
 	switch (mode)
 	{
 	case GL_MODELVIEW:
@@ -104,6 +163,7 @@ void glMatrixMode(GLenum mode)
 		break;
 	default:
 		Context::GetContext().m_currentMatStackType = Context::MatrixStackType::MatrixStackTypeError;
+		Context::GetContext().m_glError = GL_INVALID_ENUM;
 		break;
 
 	}

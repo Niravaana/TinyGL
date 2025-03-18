@@ -22,6 +22,11 @@ Context::Context()
 	m_mvMatrixStack.push(mt4x4Identity());
 	m_projMatStack.push(mt4x4Identity());
 	m_textureMatStack.push(mt4x4Identity());
+
+	//ToDo : Clear depth values with approp set value
+	m_depthBuffer.resize(m_viewport.m_width * m_viewport.m_height);
+	m_stencilBuffer.resize(m_viewport.m_width * m_viewport.m_height);
+	m_accumBuffer.resize(m_viewport.m_width * m_viewport.m_height);
 }
 
 Context::~Context()

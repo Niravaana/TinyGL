@@ -52,14 +52,19 @@ namespace TinyGl
 		void Rasterize();
 
 	public:
-		HDC m_hdc; //hold device context for current thread
-		GLenum m_topology;
+		HDC m_hdc = NULL; //hold device context for current thread
+		GLenum m_topology = GL_TRIANGLES;
 		Viewport m_viewport;
 		GLenum m_glError;
 		GLuint m_nPrims;
-		std::vector<Vector2> m_vtxBuffer;
-		std::vector<Vector2> m_idxBuffer;
+		std::vector<Vector2> m_vtxBuffer2D;
+		std::vector<Vector2> m_idxBuffer2D;
+		std::vector<Vector3> m_vtxBuffer3D;
+		std::vector<Vector3> m_idxBuffer3D;
 		std::vector<Vector3> m_colorBuffer;
+		std::vector<GLfloat> m_depthBuffer;
+		std::vector<GLfloat> m_accumBuffer;
+		std::vector<GLfloat> m_stencilBuffer;
 		std::vector<Triangle<Vector2>> m_triangles2D;
 		std::vector<Triangle<Vector3>> m_triangles3D;
 

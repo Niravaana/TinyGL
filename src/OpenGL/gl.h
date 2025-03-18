@@ -1163,6 +1163,8 @@ extern "C" void   APIENTRY glFinish (void);
 extern "C" void   APIENTRY glFlush (void);
 extern "C" GLenum APIENTRY glGetError (void);
 extern "C" void   APIENTRY glVertex2f (GLfloat x, GLfloat y);
+extern "C" void   APIENTRY glVertex3f (GLfloat x, GLfloat y, GLfloat z);
+extern "C" void   APIENTRY glVertex3i (GLint x, GLint y, GLint z);
 extern "C" void   APIENTRY glViewport (GLint x, GLint y, GLsizei width, GLsizei height);
 extern "C" void   APIENTRY glMatrixMode(GLenum mode);
 extern "C" void   APIENTRY glLoadIdentity(void);
