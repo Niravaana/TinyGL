@@ -329,3 +329,19 @@ void glScalef(GLfloat x, GLfloat y, GLfloat z)
 		Context::GetContext().m_currentMatrix = matMultiply(Context::GetContext().m_currentMatrix, t);
 	}
 }
+
+void glRotatef(GLfloat angle, GLfloat x, GLfloat y, GLfloat z)
+{
+	if (Context::GetContext().m_isWithinBeginEnd)
+	{
+		Context::GetContext().m_glError = GL_INVALID_OPERATION;
+		return;
+	}
+	
+	if (Context::GetContext().m_currentMatStackType == Context::MatrixStackType::MatrixStackTypeModelView ||
+		Context::GetContext().m_currentMatStackType == Context::MatrixStackType::MatrixStackTypeProjection)
+	{
+		Matrix4x4 t = mt4x4Rotation({ angle, x, y, z });
+		Context::GetContext().m_currentMatrix = matMultiply(Context::GetContext().m_currentMatrix, t);
+	}
+}
