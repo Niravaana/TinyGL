@@ -1,20 +1,64 @@
 #include<Windows.h>
 #include<gl.h>
 
+GLfloat trans[3];			/* current translation */
+GLfloat rot[2];				/* current rotation */
+
+enum { 
+    PAN = 1,				/* pan state bit */
+    ROTATE,				/* rotate state bits */
+    ZOOM				/* zoom state bit */
+};
+
+static void update(int state, int ox, int nx, int oy, int ny)
+{
+    int dx = ox - nx;
+    int dy = ny - oy;
+
+    switch(state) {
+    case PAN:
+	trans[0] -= dx / 100.0f;
+	trans[1] -= dy / 100.0f;
+	break;
+    case ROTATE:
+	rot[0] += (dy * 180.0f) / 500.0f;
+	rot[1] -= (dx * 180.0f) / 500.0f;
+#define clamp(x) x = x > 360.0f ? x-360.0f : x < -360.0f ? x+=360.0f : x
+	clamp(rot[0]);
+	clamp(rot[1]);
+	break;
+    case ZOOM:
+	trans[2] -= (dx+dy) / 100.0f;
+	break;
+    }
+}
 
 void
 display()
 {
-    glViewport(0, 0, 512,512);
-    glClear(GL_COLOR_BUFFER_BIT);
+    /* rotate a triangle around */
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glPushMatrix();
+    glTranslatef(trans[0], trans[1], trans[2]);
+    glRotatef(rot[0], 1.0f, 0.0f, 0.0f);
+    glRotatef(rot[1], 0.0f, 1.0f, 0.0f);
     glBegin(GL_TRIANGLES);
-    glColor3f(1.0f, 0.0f, 0.0f);
-    glVertex2f(50.0f, 50.0f);
-    glColor3f(0.0f, 1.0f, 0.0f);
-    glVertex2f(200.0f, 200.0f);
-    glColor3f(0.0f, 0.0f, 1.0f);
-    glVertex2f(200.0f, 50.0f);
+
+#define TOP glColor3f(1.0f, 0.0f, 0.0f); glVertex3i(0, 1, 0)
+#define FR  glColor3f(0.0f, 1.0f, 0.0f); glVertex3i(1, -1, 1)
+#define FL  glColor3f(0.0f, 0.0f, 1.0f); glVertex3i(-1, -1, 1)
+#define BR  glColor3f(0.0f, 0.0f, 1.0f); glVertex3i(1, -1, -1)
+#define BL  glColor3f(0.0f, 1.0f, 0.0f); glVertex3i(-1, -1, -1)
+
+    TOP; FL; FR;
+    TOP; FR; BR;
+    TOP; BR; BL;
+    TOP; BL; FL;
+    FR; FL; BL;
+    BL; BR; FR;
+    
     glEnd();
+    glPopMatrix();
     glFlush();
 }
 
