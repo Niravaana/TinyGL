@@ -1,9 +1,12 @@
+#define NOMINMAX
 #include "Context.h"
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stbi_image_write.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #include <cassert>
+#include <cfloat>
+#include <algorithm>
 
 using namespace TinyGl;
 
@@ -45,44 +48,110 @@ void Context::SyncCurrentMatrix()
         m_textureMatStack.top() = m_currentMatrix;
 }
 
+void Context::TransformVertices()
+{
+    m_screenBuffer.clear();
+    m_screenBuffer.reserve(m_vtxBuffer3D.size());
+
+    Matrix4x4 mv   = m_mvMatrixStack.top();
+    Matrix4x4 proj = m_projMatStack.top();
+
+    float halfW = m_viewport.m_width  * 0.5f;
+    float halfH = m_viewport.m_height * 0.5f;
+
+    for (const Vector3& v : m_vtxBuffer3D)
+    {
+        // Stage 1: MVP transform → clip space
+        Vector4 eye  = mulMatVec(mv,   { v.x, v.y, v.z, 1.0f });
+        Vector4 clip = mulMatVec(proj, eye);
+
+        // Stage 2: Perspective divide → NDC [-1, 1]
+        float invW = 1.0f / clip.w;
+        float ndcX = clip.x * invW;
+        float ndcY = clip.y * invW;
+        float ndcZ = clip.z * invW;
+
+        // Stage 3: Viewport transform → screen pixels (Y flipped: NDC +Y = screen top)
+        float sx = (ndcX + 1.0f) * halfW + m_viewport.m_x;
+        float sy = (1.0f - ndcY) * halfH + m_viewport.m_y;
+
+        m_screenBuffer.push_back({ sx, sy, ndcZ });
+    }
+}
+
 void Context::Rasterize()
 {
-	assert(m_nPrims != 0);
-	assert(m_viewport.m_width != 0 && m_viewport.m_height != 0);
-	std::vector<uint8_t> pixels( m_viewport.m_width * m_viewport.m_height * 4 );
+    assert(m_nPrims != 0);
+    assert(m_viewport.m_width != 0 && m_viewport.m_height != 0);
+    assert(m_screenBuffer.size() == m_vtxBuffer3D.size());
 
-	for (size_t primId = 0; primId < m_nPrims; primId++)
-	{
-		float area = edgeFunction(m_triangles2D[primId].v0, m_triangles2D[primId].v1, m_triangles2D[primId].v2);
-		for (size_t i = 0; i < m_viewport.m_height; i++)
-		{
-			for (size_t j = 0; j < m_viewport.m_width; j++)
-			{
-				Vector2 sample = { i * 0.5f, j * 0.5f };
-				
-				float w0 = edgeFunction(m_triangles2D[primId].v1, m_triangles2D[primId].v2, sample);
-				float w1 = edgeFunction(m_triangles2D[primId].v2, m_triangles2D[primId].v0, sample);
-				float w2 = edgeFunction(m_triangles2D[primId].v0, m_triangles2D[primId].v1, sample);
+    int width  = m_viewport.m_width;
+    int height = m_viewport.m_height;
 
-				if (w0 >= 0 && w1 >= 0 && w2 >= 0)
-				{
-					w0 /= area;
-					w1 /= area;
-					w2 /= area;
+    if (m_framebuffer.size() != static_cast<size_t>(width * height))
+        m_framebuffer.assign(width * height, { 0.0f, 0.0f, 0.0f });
+    if (m_depthBuffer.size() != static_cast<size_t>(width * height))
+        m_depthBuffer.assign(width * height, FLT_MAX);
 
-					float r = w0 * m_colorBuffer[primId * 3 + 0].x + w1 * m_colorBuffer[primId * 3 + 0].y + w2 * m_colorBuffer[primId * 3 + 0].z;
-					float g = w0 * m_colorBuffer[primId * 3 + 1].x + w1 * m_colorBuffer[primId * 3 + 1].y + w2 * m_colorBuffer[primId * 3 + 1].z;
-					float b = w0 * m_colorBuffer[primId * 3 + 2].x + w1 * m_colorBuffer[primId * 3 + 2].y + w2 * m_colorBuffer[primId * 3 + 2].z;
+    for (size_t primId = 0; primId < m_nPrims; primId++)
+    {
+        size_t i0 = primId * 3 + 0;
+        size_t i1 = primId * 3 + 1;
+        size_t i2 = primId * 3 + 2;
 
-					size_t pixId = j + i * m_viewport.m_width;
-					pixels[pixId * 4 + 0] = static_cast<uint8_t>(r * 255);
-					pixels[pixId * 4 + 1] = static_cast<uint8_t>(g * 255);
-					pixels[pixId * 4 + 2] = static_cast<uint8_t>(b * 255);
-					pixels[pixId * 4 + 3] = 255;
-				}
-			}
-		}
-	}
+        Vector2 p0 = { m_screenBuffer[i0].x, m_screenBuffer[i0].y };
+        Vector2 p1 = { m_screenBuffer[i1].x, m_screenBuffer[i1].y };
+        Vector2 p2 = { m_screenBuffer[i2].x, m_screenBuffer[i2].y };
 
-	stbi_write_png( "output.png", m_viewport.m_width, m_viewport.m_height, 4, pixels.data(), m_viewport.m_width * 4);
+        float area = edgeFunction(p0, p1, p2);
+        if (area <= 0.0f) continue;
+
+        int minX = static_cast<int>(std::max(0.0f, std::min({ p0.x, p1.x, p2.x })));
+        int minY = static_cast<int>(std::max(0.0f, std::min({ p0.y, p1.y, p2.y })));
+        int maxX = static_cast<int>(std::min((float)(width  - 1), std::max({ p0.x, p1.x, p2.x })));
+        int maxY = static_cast<int>(std::min((float)(height - 1), std::max({ p0.y, p1.y, p2.y })));
+
+        for (int row = minY; row <= maxY; row++)
+        {
+            for (int col = minX; col <= maxX; col++)
+            {
+                Vector2 sample = { col + 0.5f, row + 0.5f };
+
+                float w0 = edgeFunction(p1, p2, sample);
+                float w1 = edgeFunction(p2, p0, sample);
+                float w2 = edgeFunction(p0, p1, sample);
+
+                if (w0 >= 0.0f && w1 >= 0.0f && w2 >= 0.0f)
+                {
+                    w0 /= area; w1 /= area; w2 /= area;
+
+                    float z = w0 * m_screenBuffer[i0].z
+                            + w1 * m_screenBuffer[i1].z
+                            + w2 * m_screenBuffer[i2].z;
+
+                    size_t pixId = row * width + col;
+                    if (z < m_depthBuffer[pixId])
+                    {
+                        m_depthBuffer[pixId] = z;
+
+                        float r = w0 * m_colorBuffer[i0].x + w1 * m_colorBuffer[i1].x + w2 * m_colorBuffer[i2].x;
+                        float g = w0 * m_colorBuffer[i0].y + w1 * m_colorBuffer[i1].y + w2 * m_colorBuffer[i2].y;
+                        float b = w0 * m_colorBuffer[i0].z + w1 * m_colorBuffer[i1].z + w2 * m_colorBuffer[i2].z;
+
+                        m_framebuffer[pixId] = { r, g, b };
+                    }
+                }
+            }
+        }
+    }
+
+    std::vector<uint8_t> pixels(width * height * 4);
+    for (int i = 0; i < width * height; i++)
+    {
+        pixels[i * 4 + 0] = static_cast<uint8_t>(std::min(m_framebuffer[i].x, 1.0f) * 255);
+        pixels[i * 4 + 1] = static_cast<uint8_t>(std::min(m_framebuffer[i].y, 1.0f) * 255);
+        pixels[i * 4 + 2] = static_cast<uint8_t>(std::min(m_framebuffer[i].z, 1.0f) * 255);
+        pixels[i * 4 + 3] = 255;
+    }
+    stbi_write_png("output.png", width, height, 4, pixels.data(), width * 4);
 }

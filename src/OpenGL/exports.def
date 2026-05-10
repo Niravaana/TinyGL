@@ -1,11 +1,21 @@
 LIBRARY
-EXPORTS 
+EXPORTS
 	glBegin=glBegin
 	glClear=glClear
 	glColor3f=glColor3f
 	glEnd=glEnd
 	glFinish=glFinish
 	glFlush=glFlush
+	glFrustum=glFrustum
 	glGetError=glGetError
-	glVertex2f=glVertex2f 
-	glViewport=glViewport 
+	glLoadIdentity=glLoadIdentity
+	glMatrixMode=glMatrixMode
+	glPopMatrix=glPopMatrix
+	glPushMatrix=glPushMatrix
+	glRotatef=glRotatef
+	glScalef=glScalef
+	glTranslatef=glTranslatef
+	glVertex2f=glVertex2f
+	glVertex3f=glVertex3f
+	glVertex3i=glVertex3i
+	glViewport=glViewport

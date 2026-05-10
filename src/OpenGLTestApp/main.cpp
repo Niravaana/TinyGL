@@ -33,15 +33,23 @@ static void update(int state, int ox, int nx, int oy, int ny)
     }
 }
 
-void
-display()
+static void display()
 {
-    /* rotate a triangle around */
+    glViewport(0, 0, 800, 600);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glFrustum(-0.75, 0.75, -0.5625, 0.5625, 1.0, 100.0);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
     glPushMatrix();
-    glTranslatef(trans[0], trans[1], trans[2]);
-    glRotatef(rot[0], 1.0f, 0.0f, 0.0f);
-    glRotatef(rot[1], 0.0f, 1.0f, 0.0f);
+    glTranslatef(0.0f, 0.0f, -5.0f);   // move pyramid in front of camera
+    glRotatef(30.0f, 1.0f, 0.0f, 0.0f);
+    glRotatef(45.0f, 0.0f, 1.0f, 0.0f);
     glBegin(GL_TRIANGLES);
 
 #define TOP glColor3f(1.0f, 0.0f, 0.0f); glVertex3i(0, 1, 0)
