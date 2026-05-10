@@ -1,4 +1,5 @@
 #include <Windows.h>
+#include <cfloat>
 #include "Context.h"
 /*
 	1. No error checking is done for any function yet.
@@ -30,24 +31,20 @@ void glClear(GLbitfield mask)
 		return;
 	}
 
-	switch (mask)
-	{
-	case GL_COLOR_BUFFER_BIT:
-		Context::GetContext().m_colorBuffer.clear(); // ToDo : init with set default values 
-		break;
-	case GL_DEPTH_BUFFER_BIT:
-		Context::GetContext().m_depthBuffer.clear();
-		break;
-	case GL_ACCUM_BUFFER_BIT:
-		Context::GetContext().m_accumBuffer.clear();
-		break;
-	case GL_STENCIL_BUFFER_BIT:
-		Context::GetContext().m_stencilBuffer.clear();
-		break;
-	default:
-		Context::GetContext().m_glError = GL_INVALID_VALUE;
-		break;
-	}
+	auto& ctx = Context::GetContext();
+	size_t sz = static_cast<size_t>(ctx.m_viewport.m_width) * ctx.m_viewport.m_height;
+
+	if (mask & GL_COLOR_BUFFER_BIT)
+		ctx.m_framebuffer.assign(sz, { 0.0f, 0.0f, 0.0f });
+	if (mask & GL_DEPTH_BUFFER_BIT)
+		ctx.m_depthBuffer.assign(sz, FLT_MAX);
+	if (mask & GL_ACCUM_BUFFER_BIT)
+		ctx.m_accumBuffer.clear();
+	if (mask & GL_STENCIL_BUFFER_BIT)
+		ctx.m_stencilBuffer.clear();
+
+	if (mask & ~(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_ACCUM_BUFFER_BIT | GL_STENCIL_BUFFER_BIT))
+		ctx.m_glError = GL_INVALID_VALUE;
 }
 
 void glColor3f(GLfloat red, GLfloat green, GLfloat blue)
