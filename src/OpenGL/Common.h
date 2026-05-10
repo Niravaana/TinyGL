@@ -311,17 +311,17 @@ namespace TinyGl
 		float angle = r.x;
 		Vector3 axis = { r.y, r.z, r.w };
 		float angleRad = angle * (Pi / 180.0f);
-		float cos = std::cosf(angleRad);
-		float sin = std::sinf(angleRad);
+		float c = std::cosf(angleRad);
+		float s = std::sinf(angleRad);
 		axis = normalize(axis);
-		float factor = 1.0f - cos;
-		Vector3 axisT = factor * axis;
+		float t = 1.0f - c;
+		float x = axis.x, y = axis.y, z = axis.z;
 
 		Matrix4x4 rotation;
-		rotation.row[0] = { cos + axisT[0] * axis[0], axisT[0] * axis[2] - sin * axis[1], axisT[0] * axis[2] - sin * axis[1], 0.0f };
-		rotation.row[1] = { axisT[1] * axis[0] - sin * axis[2], cos + axisT[1] * axis[1], axisT[1] * axis[2] + sin * axis[0], 0.0f };
-		rotation.row[2] = { axisT[2] * axis[0] + sin * axis[1], axisT[2] * axis[1] - sin * axis[0], cos + axisT[2] * axis[2], 0.0f };
-
+		rotation.row[0] = { c + t*x*x,     t*x*y - s*z,  t*x*z + s*y,  0.0f };
+		rotation.row[1] = { t*x*y + s*z,   c + t*y*y,    t*y*z - s*x,  0.0f };
+		rotation.row[2] = { t*x*z - s*y,   t*y*z + s*x,  c + t*z*z,    0.0f };
+		rotation.row[3] = { 0.0f,          0.0f,          0.0f,          1.0f };
 		return rotation;
 	}
 }
