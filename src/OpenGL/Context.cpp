@@ -53,25 +53,22 @@ void Context::TransformVertices()
     m_screenBuffer.clear();
     m_screenBuffer.reserve(m_vtxBuffer3D.size());
 
-    Matrix4x4 mv   = m_mvMatrixStack.top();
-    Matrix4x4 proj = m_projMatStack.top();
+    Matrix4x4 mv   = m_capturedMV;
+    Matrix4x4 proj = m_capturedProj;
 
     float halfW = m_viewport.m_width  * 0.5f;
     float halfH = m_viewport.m_height * 0.5f;
 
     for (const Vector3& v : m_vtxBuffer3D)
     {
-        // Stage 1: MVP transform → clip space
         Vector4 eye  = mulMatVec(mv,   { v.x, v.y, v.z, 1.0f });
         Vector4 clip = mulMatVec(proj, eye);
 
-        // Stage 2: Perspective divide → NDC [-1, 1]
         float invW = 1.0f / clip.w;
         float ndcX = clip.x * invW;
         float ndcY = clip.y * invW;
         float ndcZ = clip.z * invW;
 
-        // Stage 3: Viewport transform → screen pixels (Y flipped: NDC +Y = screen top)
         float sx = (ndcX + 1.0f) * halfW + m_viewport.m_x;
         float sy = (1.0f - ndcY) * halfH + m_viewport.m_y;
 

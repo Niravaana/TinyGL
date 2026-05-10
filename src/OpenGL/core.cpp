@@ -19,8 +19,12 @@ using namespace TinyGl;
 
 void glBegin(GLenum mode)
 {
-	Context::GetContext().m_isWithinBeginEnd = true;
-	Context::GetContext().m_topology = mode;
+	auto& ctx = Context::GetContext();
+	ctx.SyncCurrentMatrix();
+	ctx.m_capturedMV   = ctx.m_mvMatrixStack.top();
+	ctx.m_capturedProj = ctx.m_projMatStack.top();
+	ctx.m_isWithinBeginEnd = true;
+	ctx.m_topology = mode;
 }
 
 void glClear(GLbitfield mask)
@@ -49,10 +53,7 @@ void glClear(GLbitfield mask)
 
 void glColor3f(GLfloat red, GLfloat green, GLfloat blue)
 {
-	if (Context::GetContext().m_isWithinBeginEnd)
-	{
-		Context::GetContext().m_colorBuffer.push_back({ red, green, blue });
-	}
+	Context::GetContext().m_currentColor = { red, green, blue };
 }
 
 void glEnd(void)
@@ -91,12 +92,16 @@ void glEnd(void)
 
 void glFinish(void)
 {
-	Context::GetContext().Rasterize();
+    Context::GetContext().SyncCurrentMatrix();
+    Context::GetContext().TransformVertices();
+    Context::GetContext().Rasterize();
 }
 
 void glFlush(void)
 {
-	Context::GetContext().Rasterize();
+    Context::GetContext().SyncCurrentMatrix();
+    Context::GetContext().TransformVertices();
+    Context::GetContext().Rasterize();
 }
 
 GLenum glGetError(void)
@@ -121,6 +126,7 @@ void glVertex3f(GLfloat x, GLfloat y, GLfloat z)
 	if (Context::GetContext().m_isWithinBeginEnd)
 	{
 		Context::GetContext().m_vtxBuffer3D.push_back({ x, y, z });
+		Context::GetContext().m_colorBuffer.push_back(Context::GetContext().m_currentColor);
 	}
 }
 
@@ -128,7 +134,10 @@ void glVertex3i(GLint x, GLint y, GLint z)
 {
 	if (Context::GetContext().m_isWithinBeginEnd)
 	{
-		Context::GetContext().m_vtxBuffer3D.push_back({ static_cast<float>(x), static_cast<float>(y), static_cast<float>(z) });
+		Context::GetContext().m_vtxBuffer3D.push_back({
+			static_cast<float>(x), static_cast<float>(y), static_cast<float>(z)
+		});
+		Context::GetContext().m_colorBuffer.push_back(Context::GetContext().m_currentColor);
 	}
 }
 
@@ -154,6 +163,8 @@ void glViewport(GLint x, GLint y, GLsizei width, GLsizei height)
 
 void glMatrixMode(GLenum mode)
 {
+	Context::GetContext().SyncCurrentMatrix();
+
 	if (Context::GetContext().m_isWithinBeginEnd)
 	{
 		Context::GetContext().m_glError = GL_INVALID_OPERATION;
@@ -205,8 +216,8 @@ void glFrustum(GLdouble left, GLdouble right, GLdouble bottom, GLdouble top, GLd
 	}
 	float A = static_cast<float>((right + left) / (right - left));
 	float B = static_cast<float>((top + bottom) / (top - bottom));
-	float C = static_cast<float>((zFar + zNear) / (zFar - zNear));
-	float D = static_cast<float>((2 * zFar * zNear) / (zFar - zNear));
+	float C = static_cast<float>(-(zFar + zNear) / (zFar - zNear));
+	float D = static_cast<float>(-(2 * zFar * zNear) / (zFar - zNear));
 	float X = static_cast<float>((2 * zNear) / (right - left));
 	float Y = static_cast<float>((2 * zNear) / (top - bottom));
 

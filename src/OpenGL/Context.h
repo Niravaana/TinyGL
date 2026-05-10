@@ -67,6 +67,8 @@ namespace TinyGl
 		Vector3 m_currentColor = { 1.0f, 1.0f, 1.0f }; // GL color latch, default white
 		std::vector<Vector3> m_framebuffer;              // pixel output (width * height)
 		std::vector<Vector3> m_screenBuffer;             // screen-space verts: x/y in pixels, z in NDC
+		Matrix4x4 m_capturedMV;                         // MV matrix snapshot at glBegin time
+		Matrix4x4 m_capturedProj;                       // Proj matrix snapshot at glBegin time
 		std::vector<GLfloat> m_depthBuffer;
 		std::vector<GLfloat> m_accumBuffer;
 		std::vector<GLfloat> m_stencilBuffer;

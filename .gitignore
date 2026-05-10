@@ -3,3 +3,31 @@
 *.png
 build/
 dist/
+
+# VS build artifacts
+.vs/
+x64/
+**/x64/
+**/*.obj
+**/*.ilk
+**/*.pdb
+**/*.idb
+**/*.exp
+**/*.lib
+**/*.dll
+**/*.exe
+**/*.ipch
+**/*.log
+**/*.tlog
+**/*.lastbuildstate
+**/*.recipe
+**/*.FileListAbsolute.txt
+**/*.Build.CppClean.log
+**/OpenGL/x64/
+**/OpenGLTestApp/x64/
+
+# Debug output
+debug.txt
+
+# Docs / planning artifacts
+docs/
