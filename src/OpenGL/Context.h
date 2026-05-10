@@ -49,6 +49,8 @@ namespace TinyGl
 			return instance;
 		}
 
+		void SyncCurrentMatrix();
+		void TransformVertices();
 		void Rasterize();
 
 	public:
@@ -62,6 +64,9 @@ namespace TinyGl
 		std::vector<Vector3> m_vtxBuffer3D;
 		std::vector<Vector3> m_idxBuffer3D;
 		std::vector<Vector3> m_colorBuffer;
+		Vector3 m_currentColor = { 1.0f, 1.0f, 1.0f }; // GL color latch, default white
+		std::vector<Vector3> m_framebuffer;              // pixel output (width * height)
+		std::vector<Vector3> m_screenBuffer;             // screen-space verts: x/y in pixels, z in NDC
 		std::vector<GLfloat> m_depthBuffer;
 		std::vector<GLfloat> m_accumBuffer;
 		std::vector<GLfloat> m_stencilBuffer;
