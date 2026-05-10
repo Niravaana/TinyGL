@@ -22,6 +22,7 @@ Context::Context()
 	m_mvMatrixStack.push(mt4x4Identity());
 	m_projMatStack.push(mt4x4Identity());
 	m_textureMatStack.push(mt4x4Identity());
+	m_currentMatrix = mt4x4Identity();
 
 	//ToDo : Clear depth values with approp set value
 	m_depthBuffer.resize(m_viewport.m_width * m_viewport.m_height);
@@ -32,6 +33,16 @@ Context::Context()
 Context::~Context()
 {
 
+}
+
+void Context::SyncCurrentMatrix()
+{
+    if (m_currentMatStackType == MatrixStackType::MatrixStackTypeModelView)
+        m_mvMatrixStack.top() = m_currentMatrix;
+    else if (m_currentMatStackType == MatrixStackType::MatrixStackTypeProjection)
+        m_projMatStack.top() = m_currentMatrix;
+    else if (m_currentMatStackType == MatrixStackType::MatrixStackTypeTexture)
+        m_textureMatStack.top() = m_currentMatrix;
 }
 
 void Context::Rasterize()

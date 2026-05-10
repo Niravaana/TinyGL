@@ -73,7 +73,7 @@ namespace TinyGl
 		std::vector<Triangle<Vector2>> m_triangles2D;
 		std::vector<Triangle<Vector3>> m_triangles3D;
 
-		MatrixStackType m_currentMatStackType = MatrixStackType::MatrixStackTypeError;
+		MatrixStackType m_currentMatStackType = MatrixStackType::MatrixStackTypeModelView;
 		Matrix4x4 m_currentMatrix;
 		std::stack<Matrix4x4> m_mvMatrixStack;
 		std::stack<Matrix4x4> m_projMatStack;
